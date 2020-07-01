@@ -1,0 +1,23 @@
+{
+    "compileOnSave": true,
+
+    "compilerOptions": {
+        "module": "amd",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "outFile": "./public/dist/index.js",
+        "outDir": "./public/dist",
+        "sourceMap": true,
+        "declaration": true,
+        "declarationMap": true,
+        "target": "es5",
+        "composite": true,
+    },
+    "include": ["public"],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts",
+        "**/*.d.ts"
+    ]
+}
