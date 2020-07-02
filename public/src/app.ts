@@ -20,23 +20,9 @@ namespace GAME {
 
             const program = await Shader.loadShaderProgram(VertexShader.getShader(),FragmentShader.getShader());
 
-            
-
-            /* const vertexBuffer = GLUtils.initBuffer(vertexData);
-            const colorBuffer = GLUtils.initBuffer(colorData);
-
-            const positionLocation = gl.getAttribLocation(program, `position`);
-            gl.enableVertexAttribArray(positionLocation);
-            gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-            gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
-
-            const colorLocation = gl.getAttribLocation(program, `color`);
-            gl.enableVertexAttribArray(colorLocation);
-            gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-            gl.vertexAttribPointer(colorLocation, 3, gl.FLOAT, false, 0, 0); */
 
             var vertexData = [
-                0, 1, 0,
+                0, GLUtils.convertPercentageToNormalized(0), 0,
                 1, -1, 0,
                 -1, -1, 0,
             ];
@@ -50,7 +36,7 @@ namespace GAME {
 
             this.draw.drawTriangle(program, vertexData, colorData);
 
-            vertexData = [
+            /* vertexData = [
                 0, .25, 0,
                 0.25, -0.25, 0,
                 -0.25, -0.25, 0,
@@ -63,10 +49,7 @@ namespace GAME {
                 0, 1, 0,    //Vertex 3 color
             ];
 
-            this.draw.drawTriangle(program, vertexData, colorData);
-
-            gl.useProgram(program);
-            gl.drawArrays(gl.TRIANGLES, 0, 3);
+            this.draw.drawTriangle(program, vertexData, colorData); */
 
         }
 

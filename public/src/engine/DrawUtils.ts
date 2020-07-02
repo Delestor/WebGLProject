@@ -17,6 +17,9 @@ namespace GAME{
             gl.enableVertexAttribArray(colorLocation);
             gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
             gl.vertexAttribPointer(colorLocation, 3, gl.FLOAT, false, 0, 0);
+
+            gl.useProgram(program);
+            gl.drawArrays(gl.TRIANGLES, 0, 3);
         }
 
     }

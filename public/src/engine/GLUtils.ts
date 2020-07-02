@@ -34,5 +34,14 @@ namespace GAME {
     
             return buffer;
         }
+
+        public static convertNormalizedToPercentage(){
+
+        }
+
+        public static convertPercentageToNormalized(percentage : number) : number{
+            return percentage / 100;
+        }
+
     }
 }
