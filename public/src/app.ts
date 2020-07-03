@@ -5,9 +5,12 @@ namespace GAME {
         private canvas: HTMLCanvasElement;
         private draw: DrawUtils;
         private basicShader: Shader;
+        private linePositionArray : any;
+        private countPoints : number;
 
         constructor() {
             this.canvas = GLUtils.gl_init('webgl_canvas');
+            this.countPoints = 0;
         }
 
         async init() {
@@ -21,6 +24,48 @@ namespace GAME {
 
             //const program = await Shader.loadShaderProgram(VertexShader.getShader(),FragmentShader.getShader());
             this.basicShader = new Shader("basicShader", VertexShader.getShader(),FragmentShader.getShader());
+            
+            this.drawScene();
+        }
+
+        /**
+         * Resizes the canvas to fit the window.
+         */
+        public resize(){
+            if(this.canvas !== undefined){
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+        }
+
+        public getCursorPosition(event:any){
+            if(this.canvas !== undefined){
+                //const rect = this.canvas.getBoundingClientRect()
+                var x : number = event.clientX / this.canvas.width;
+                var y : number = event.clientY / this.canvas.height;
+                console.log("x: " + x + " y: " + y);
+                
+                x %=1;
+                y %=1;
+
+                this.drawScene();
+
+                if(this.countPoints == 0){
+                    this.linePositionArray = [x, y, 0.0];
+                    this.countPoints += 1;
+                }else if(this.countPoints == 1){
+
+                    this.linePositionArray = [this.linePositionArray[0],this.linePositionArray[1], this.linePositionArray[2], x, y, 0.0];
+                    this.draw.drawLineDefaultColor(this.basicShader.program, this.linePositionArray);
+
+                    this.countPoints = 0;
+                    console.log('Line drawed.'+this.linePositionArray);
+                    
+                }
+            }
+        }
+
+        private drawScene(){
             const program = this.basicShader.program;
 
             var vertexData = [
@@ -53,41 +98,8 @@ namespace GAME {
 
             this.draw.drawTriangle(program, vertexData, colorData);
 
-            vertexData = [
-                0, 1, 0, 
-                0, -1, 0
-            ];
-            colorData =[
-                //R, G, B
-                0, 1, 0,    //Vertex 1 color
-                0, 1, 0,    //Vertex 2 color
-                0, 1, 0,    //Vertex 3 color
-            ];
-
-            this.draw.drawLine(program, vertexData, colorData);
-
-            vertexData = [
-                1, 0, 0, 
-                -1, 0, 0
-            ];
-            colorData =[
-                //R, G, B
-                0, 1, 0,    //Vertex 1 color
-                0, 1, 0,    //Vertex 2 color
-                0, 1, 0,    //Vertex 3 color
-            ];
-
-            this.draw.drawLine(program, vertexData, colorData);
+            this.draw.drawXYLines(program);
         }
 
-        /**
-         * Resizes the canvas to fit the window.
-         */
-        public resize(){
-            if(this.canvas !== undefined){
-                this.canvas.width = window.innerWidth;
-                this.canvas.height = window.innerHeight;
-            }
-        }
     }
 }
