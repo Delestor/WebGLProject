@@ -13,9 +13,5 @@ window.onresize = function(){
 }
 
 window.addEventListener("click", function(event) {
-    game.getCursorPosition(event)
-    /* var x = event.clientX;
-    var y = event.clientY;
-    var coords = "X coords: " + x + ", Y coords: " + y;
-    alert(coords); */
+    game.getCursorPosition(event);
 });

@@ -20,6 +20,8 @@ namespace GAME {
                 console.log('entramos en init app.ts');
             }
 
+            gl.clearColor( 0, 0, 0, 1 );
+
             this.draw = new DrawUtils();
 
             //const program = await Shader.loadShaderProgram(VertexShader.getShader(),FragmentShader.getShader());
@@ -66,6 +68,7 @@ namespace GAME {
         }
 
         private drawScene(){
+
             const program = this.basicShader.program;
 
             var vertexData = [
