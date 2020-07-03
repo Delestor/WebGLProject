@@ -4,6 +4,7 @@ namespace GAME {
 
         private canvas: HTMLCanvasElement;
         private draw: DrawUtils;
+        private basicShader: Shader;
 
         constructor() {
             this.canvas = GLUtils.gl_init('webgl_canvas');
@@ -18,13 +19,14 @@ namespace GAME {
 
             this.draw = new DrawUtils();
 
-            const program = await Shader.loadShaderProgram(VertexShader.getShader(),FragmentShader.getShader());
-
+            //const program = await Shader.loadShaderProgram(VertexShader.getShader(),FragmentShader.getShader());
+            this.basicShader = new Shader("basicShader", VertexShader.getShader(),FragmentShader.getShader());
+            const program = this.basicShader.program;
 
             var vertexData = [
-                0, GLUtils.convertPercentageToNormalized(0), 0,
-                1, -1, 0,
-                -1, -1, 0,
+                .5, GLUtils.convertPercentageToNormalized(50), 0,
+                .75, 1, 0,
+                1, .5, 0,
             ];
 
             var colorData =[
@@ -36,10 +38,10 @@ namespace GAME {
 
             this.draw.drawTriangle(program, vertexData, colorData);
 
-            /* vertexData = [
-                0, .25, 0,
-                0.25, -0.25, 0,
-                -0.25, -0.25, 0,
+            vertexData = [
+                -.75, GLUtils.convertPercentageToNormalized(-50), 0,
+                -1, -1, 0,
+                -.5, -1, 0,
             ];
 
             colorData =[
@@ -49,8 +51,33 @@ namespace GAME {
                 0, 1, 0,    //Vertex 3 color
             ];
 
-            this.draw.drawTriangle(program, vertexData, colorData); */
+            this.draw.drawTriangle(program, vertexData, colorData);
 
+            vertexData = [
+                0, 1, 0, 
+                0, -1, 0
+            ];
+            colorData =[
+                //R, G, B
+                0, 1, 0,    //Vertex 1 color
+                0, 1, 0,    //Vertex 2 color
+                0, 1, 0,    //Vertex 3 color
+            ];
+
+            this.draw.drawLine(program, vertexData, colorData);
+
+            vertexData = [
+                1, 0, 0, 
+                -1, 0, 0
+            ];
+            colorData =[
+                //R, G, B
+                0, 1, 0,    //Vertex 1 color
+                0, 1, 0,    //Vertex 2 color
+                0, 1, 0,    //Vertex 3 color
+            ];
+
+            this.draw.drawLine(program, vertexData, colorData);
         }
 
         /**

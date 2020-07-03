@@ -1,50 +1,69 @@
-namespace GAME {
+namespace GAME{
+    /**
+     * WebGL Shader.
+     */
+    export class Shader{
+        private _name: string;
+        private _program: WebGLProgram;
 
-    export class Shader {
-        public static async loadShaderProgram(vertexURL: string, fragmentURL: string) {
+        /**
+         * Creates a new Shader, based on vertex and fragment data.
+         * @param name 
+         * @param vertexSource 
+         * @param fragmentSource 
+         */
+        public constructor(name:string, vertexSource: string, fragmentSource: string){
+            this._name = name;
+            let vertexShader = this.loadShader(vertexSource, gl.VERTEX_SHADER);
+            let fragmentShader = this.loadShader(fragmentSource, gl.FRAGMENT_SHADER);
 
-            // Fetch shader source code from given URLs
+            this.createProgram(vertexShader, fragmentShader);
+        }
 
-            const vertexSource = vertexURL;
+        /**
+         * Get the shader's name
+         */
+        public get name(): string{
+            return this._name;
+        }
 
-            const fragmentSource = fragmentURL;
+        /**
+         * Get the shader's program
+         */
+        public get program(): WebGLProgram{
+            return this._program;
+        }
 
-            // Util for loading individual shaders
+        /**
+         * Tell WebGL that we are going to use this shader.
+         */
+        public use():void{
+            gl.useProgram(this._program);
+        }
 
-            function loadShader(type: number, source: string) {
-                const shader = gl.createShader(type);
-                gl.shaderSource(shader, source);
-                gl.compileShader(shader);
-
-                if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-                    if (type === gl.VERTEX_SHADER) {
-                        throw new Error(`(WebGL vertex shader) ${gl.getShaderInfoLog(shader)}`);
-                    } else if (type === gl.FRAGMENT_SHADER) {
-                        throw new Error(`(WebGL fragment shader) ${gl.getShaderInfoLog(shader)}`);
-                    }
-                }
-
-                return shader;
+        private loadShader(source: string, shaderType:number):WebGLShader{
+            let shader: WebGLShader = gl.createShader(shaderType);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            let error = gl.getShaderInfoLog(shader);
+            if(error !== ""){
+                throw new Error("Error compiling shader '"+this._name+"': "+error);
             }
+            return shader;
+        }
 
-            /* console.log('vertex Shader: ', vertexSource);
-            console.log('fragment Shader: ', fragmentSource); */
+        private createProgram(vertexShader:WebGLShader, fragmentShader:WebGLShader):void{
+            this._program = gl.createProgram();
 
+            gl.attachShader(this._program, vertexShader);
+            gl.attachShader(this._program, fragmentShader);
 
+            gl.linkProgram(this._program);
 
-            const vertexShader = loadShader(gl.VERTEX_SHADER, vertexSource);
-            const fragmentShader = loadShader(gl.FRAGMENT_SHADER, fragmentSource);
-
-            const program = gl.createProgram();
-            gl.attachShader(program, vertexShader);
-            gl.attachShader(program, fragmentShader);
-            gl.linkProgram(program);
-
-            if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-                throw new Error(`(WebGL shader program) ${gl.getProgramInfoLog(vertexShader)}`)
+            let error = gl.getProgramInfoLog(this._program);
+            if(error !== ""){
+                throw new Error("Error linking shader '"+this._name+"': "+error);
             }
-
-            return program;
         }
     }
 }
