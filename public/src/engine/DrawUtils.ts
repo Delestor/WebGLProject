@@ -64,7 +64,7 @@ namespace GAME{
         }
 
         public static drawLineRandomColor(program : WebGLProgram, vertexData: Iterable<number>){
-            this.drawLine(program, vertexData, this.randomColorData);
+            this.drawLine(program, vertexData, Utils.randomFloatArray(3,3));
         }
 
         /**
