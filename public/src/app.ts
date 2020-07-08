@@ -3,13 +3,14 @@ namespace GAME {
     export class App {
 
         private canvas: HTMLCanvasElement;
-        private draw: DrawUtils;
-        private basicShader: Shader;
+        public basicShader: Shader;
         private linePositionArray : any;
         private countPoints : number;
 
         constructor() {
             this.canvas = GLUtils.gl_init('webgl_canvas');
+            this.resize();
+            
             this.countPoints = 0;
         }
 
@@ -21,8 +22,6 @@ namespace GAME {
             }
 
             gl.clearColor( 0, 0, 0, 1 );
-
-            this.draw = new DrawUtils();
 
             //const program = await Shader.loadShaderProgram(VertexShader.getShader(),FragmentShader.getShader());
             this.basicShader = new Shader("basicShader", VertexShader.getShader(),FragmentShader.getShader());
@@ -37,18 +36,18 @@ namespace GAME {
             if(this.canvas !== undefined){
                 this.canvas.width = window.innerWidth;
                 this.canvas.height = window.innerHeight;
+
+                gl.viewport(0,0,this.canvas.width, this.canvas.height);
             }
         }
 
         public getCursorPosition(event:any){
             if(this.canvas !== undefined){
                 //const rect = this.canvas.getBoundingClientRect()
-                var x : number = event.clientX / this.canvas.width;
-                var y : number = event.clientY / this.canvas.height;
-                console.log("x: " + x + " y: " + y);
-                
-                x %=1;
-                y %=1;
+                var x : number = (event.clientX / this.canvas.width) * 2 - 1;
+                var y : number = (event.clientY / this.canvas.height) * 2 - 1;
+
+                y *= -1;             
 
                 this.drawScene();
 
@@ -58,10 +57,10 @@ namespace GAME {
                 }else if(this.countPoints == 1){
 
                     this.linePositionArray = [this.linePositionArray[0],this.linePositionArray[1], this.linePositionArray[2], x, y, 0.0];
-                    this.draw.drawLineDefaultColor(this.basicShader.program, this.linePositionArray);
-
+                    //DrawUtils.drawLineDefaultColor(this.basicShader.program, this.linePositionArray);
+                    DrawUtils.drawLineRandomColor(this.basicShader.program, this.linePositionArray);
                     this.countPoints = 0;
-                    console.log('Line drawed.'+this.linePositionArray);
+                    console.log('Line drawn, positionArray ='+this.linePositionArray);
                     
                 }
             }
@@ -84,7 +83,7 @@ namespace GAME {
                 0, 0, 1,    //Vertex 3 color
             ];
 
-            this.draw.drawTriangle(program, vertexData, colorData);
+            DrawUtils.drawTriangle(program, vertexData, colorData);
 
             vertexData = [
                 -.75, GLUtils.convertPercentageToNormalized(-50), 0,
@@ -99,9 +98,10 @@ namespace GAME {
                 0, 1, 0,    //Vertex 3 color
             ];
 
-            this.draw.drawTriangle(program, vertexData, colorData);
+            var triangle1 = new Triangle(program, vertexData, colorData);
+            triangle1.draw();
 
-            this.draw.drawXYLines(program);
+            DrawUtils.drawXYLines(program);
         }
 
     }

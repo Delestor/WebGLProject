@@ -2,14 +2,20 @@ namespace GAME{
 
     export class DrawUtils{
 
-        private defaultColorData=[
+        private static defaultColorData=[
             //R, G, B
             0, 1, 0,    //Vertex 1 color
             0, 1, 0,    //Vertex 2 color
             0, 1, 0,    //Vertex 3 color
         ];
 
-        public drawTriangle(program : WebGLProgram, vertexData: Iterable<number>, colorData: Iterable<number>){
+        private static randomColorData=[
+            Math.random()%1,Math.random()%1,Math.random()%1,
+            Math.random()%1,Math.random()%1,Math.random()%1,
+            Math.random()%1,Math.random()%1,Math.random()%1,
+        ];
+
+        public static drawTriangle(program : WebGLProgram, vertexData: Iterable<number>, colorData: Iterable<number>){
 
             const vertexBuffer = GLUtils.initBuffer(vertexData);
             const colorBuffer = GLUtils.initBuffer(colorData);
@@ -29,7 +35,7 @@ namespace GAME{
             gl.drawArrays(gl.TRIANGLES, 0, 3);
         }
 
-        public drawLine(program : WebGLProgram, vertexData: Iterable<number>, colorData: Iterable<number>){
+        public static drawLine(program : WebGLProgram, vertexData: Iterable<number>, colorData: Iterable<number>){
             const vertexBuffer = GLUtils.initBuffer(vertexData);
             const colorBuffer = GLUtils.initBuffer(colorData);
 
@@ -53,14 +59,18 @@ namespace GAME{
          * @param program 
          * @param vertexData 
          */
-        public drawLineDefaultColor(program : WebGLProgram, vertexData: Iterable<number>){
+        public static drawLineDefaultColor(program : WebGLProgram, vertexData: Iterable<number>){
             this.drawLine(program, vertexData, this.defaultColorData);
+        }
+
+        public static drawLineRandomColor(program : WebGLProgram, vertexData: Iterable<number>){
+            this.drawLine(program, vertexData, this.randomColorData);
         }
 
         /**
          * Draws the X and Y lines coresponding to the x = 0 and y = 0
          */
-        public drawXYLines(program : WebGLProgram){
+        public static drawXYLines(program : WebGLProgram){
             var colorLines = this.defaultColorData;
 
             this.drawLine(program, 
