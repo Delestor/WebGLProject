@@ -49,6 +49,7 @@ namespace GAME {
                 //const rect = this.canvas.getBoundingClientRect()
                 var x : number = (event.clientX / this.canvas.width) * 2 - 1;
                 var y : number = (event.clientY / this.canvas.height) * 2 - 1;
+                //TODO: cursor position relative to canvas dimensions, if canvas is not full screen is not capturing the right position of the cursor.
 
                 y *= -1;             
 
@@ -62,11 +63,10 @@ namespace GAME {
                     this.linePositionArray = [this.linePositionArray[0],this.linePositionArray[1], this.linePositionArray[2], x, y, 0.0];
                     var line = new LineImpl(this.basicShader.program, this.linePositionArray);
                     line.draw();
-                    //DrawUtils.drawLineDefaultColor(this.basicShader.program, this.linePositionArray);
-                    //DrawUtils.drawLineRandomColor(this.basicShader.program, this.linePositionArray);
                     this.countPoints = 0;
                     console.log('Line drawn, positionArray ='+this.linePositionArray);
-                    
+                    //TODO: Extract the line drawing outside the getCursorPosition, this function should return the position captured
+                    //, and the drawing should be done somewhere else.
                 }
             }
         }
