@@ -15,3 +15,8 @@ window.onresize = function(){
 window.addEventListener("click", function(event) {
     game.getCursorPosition(event);
 });
+
+function slideBarEvent(newValue: number){
+    game.slideBarValueUpdate(newValue);
+    document.getElementById("sliderOutput").innerHTML = newValue+"";
+}

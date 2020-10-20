@@ -6,9 +6,12 @@ namespace GAME {
         public basicShader: Shader;
         private linePositionArray : any;
         private countPoints : number;
+        private gridSize : number;
 
         constructor() {
             this.canvas = GLUtils.gl_init('webgl_canvas');
+            this.gridSize = Number((<HTMLInputElement>document.getElementById("sliderRange")).value);
+            document.getElementById("sliderOutput").innerHTML = this.gridSize+"";
             this.resize();
             
             this.countPoints = 0;
@@ -68,6 +71,12 @@ namespace GAME {
             }
         }
 
+        public slideBarValueUpdate(newValue : number){
+            this.gridSize = newValue;
+            console.log("slideVarUpdated: "+newValue);
+            this.drawScene();
+        }
+
         private drawScene(){
 
             const program = this.basicShader.program;
@@ -105,7 +114,7 @@ namespace GAME {
 
             //new DrawLineImpl(program).drawOnlyCenter();
 
-            new GridImpl(program, 10, 10).draw();
+            new GridImpl(program, this.gridSize, this.gridSize).draw();
         }
 
     }
