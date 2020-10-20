@@ -1,5 +1,5 @@
 namespace GAME{
-    export interface IFigure{
+    export interface Figure{
         name : string;
         positionData : Iterable<number>;
         colorData : Iterable<number>;

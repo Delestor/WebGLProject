@@ -1,5 +1,5 @@
 namespace GAME{
-    export class Triangle implements IFigure{
+    export class TriangleImpl implements Figure{
         name: string;
         positionData: Iterable<number>;
         colorData: Iterable<number>;
@@ -15,7 +15,8 @@ namespace GAME{
         }
 
         public draw(): void {
-            DrawUtils.drawTriangle(this.program, this.positionData, this.colorData);
+            var triangle = new DrawTriangleImpl(this.program);
+            triangle.draw(this.positionData, this.colorData);
         }
         
     }
