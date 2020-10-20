@@ -103,7 +103,9 @@ namespace GAME {
             var triangle1 = new TriangleImpl(program, vertexData, colorData);
             triangle1.draw();
 
-            new DrawLineImpl(program).drawOnlyCenter();
+            //new DrawLineImpl(program).drawOnlyCenter();
+
+            new GridImpl(program, 10, 10).draw();
         }
 
     }
